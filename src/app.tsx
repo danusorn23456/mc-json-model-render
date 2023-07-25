@@ -5,7 +5,7 @@ import { McSimplifyModel } from "./types";
 import { Model, TextInput } from "./component";
 
 function App() {
-  const [blockName, setBlockName] = useState("anvil");
+  const [blockName, setBlockName] = useState("lectern");
   const [model, setModel] = useState<McSimplifyModel>();
 
   useEffect(() => {

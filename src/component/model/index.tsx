@@ -1,6 +1,6 @@
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
-import { BoxGeometry, Group, Mesh, MeshStandardMaterial } from "three";
+import { BoxGeometry, Group, Mesh, MeshStandardMaterial, Vector3 } from "three";
 import { McModel, McModelMeshProps, McSimplifyModel } from "~/types";
 import { getModelMeshProps } from "~/utils";
 
@@ -43,7 +43,7 @@ const Model = ({ model, spin }: Model) => {
     for (let index = 0; index < modelMeshs.length; index++) {
       const {
         geometryProps: { args = [16, 16, 16] },
-        meshProps: { name = "", position = [0, 0, 0] },
+        meshProps: { name = "", position, rotation },
       } = modelMeshs[index];
 
       const isBounding =
@@ -59,6 +59,7 @@ const Model = ({ model, spin }: Model) => {
         material.wireframe = true;
       } else {
         mesh.name = name;
+        mesh.rotation.set(...rotation.value);
         mesh.position.set(...position);
       }
 
