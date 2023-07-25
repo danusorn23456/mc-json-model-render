@@ -1,6 +1,6 @@
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
-import { BoxGeometry, Group, Mesh, MeshStandardMaterial, Vector3 } from "three";
+import { BoxGeometry, Group, Mesh, MeshStandardMaterial } from "three";
 import { McModel, McModelMeshProps, McSimplifyModel } from "~/types";
 import { getModelMeshProps } from "~/utils";
 
