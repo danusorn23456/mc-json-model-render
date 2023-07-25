@@ -23,8 +23,14 @@ export type McUV = number[];
 
 export type McTexture = Partial<Record<string & "model", string>> | string;
 
+export type McRotation = {
+  angle: number;
+  axis: string;
+  origin: McPosition;
+};
+
 export type McTransformProps = {
-  rotation?: McPosition;
+  rotation?: McRotation;
   scale?: number;
   translation?: McPosition;
 };
@@ -44,6 +50,7 @@ export type McMaterialProps = {
 export type McGeometryProps = {
   from?: McPosition;
   to?: McPosition;
+  rotation?: McRotation;
 };
 
 export type McMultiPart = {
@@ -84,9 +91,15 @@ export type McSimplifyModel = Omit<McModel, "parent"> & {
 };
 
 export type McModelMeshProps = {
-  meshProps: Omit<MeshProps, "position"> & {
-    position?: McPosition;
+  meshProps: Omit<MeshProps, "position" | "rotation"> & {
+    position: McPosition;
+    rotation: {
+      value: McPosition;
+      origin: McPosition;
+    };
   };
-  geometryProps: BoxGeometryProps;
+  geometryProps: Omit<BoxGeometryProps, "args"> & {
+    args: McPosition;
+  };
   materialProps: MeshStandardMaterialProps;
 };
