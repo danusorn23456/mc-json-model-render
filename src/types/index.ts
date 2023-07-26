@@ -4,8 +4,9 @@ import {
   MeshStandardMaterialProps,
 } from "@react-three/fiber";
 
-export enum McEnum {
+export enum McDefault {
   MinecraftTag = "minecraft:",
+  ArgSize = 16,
 }
 
 export type McSide = "front" | "back" | " left" | "right" | "up" | "down";
