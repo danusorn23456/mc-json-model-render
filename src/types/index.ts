@@ -66,7 +66,7 @@ export type McModel = McGeometryProps & {
   y?: number;
   uvlock?: boolean;
   weight?: number;
-  parent?: string;
+  parent?: string | McModel;
   display?: McDisplay;
   elements?: McModel[];
 };
@@ -84,10 +84,6 @@ export type McDisplay = {
 export type McBlockState = {
   variants?: McModelMap;
   multipart?: McMultiPart;
-};
-
-export type McSimplifyModel = Omit<McModel, "parent"> & {
-  parent?: McModel;
 };
 
 export type McModelMeshProps = {
