@@ -5,11 +5,23 @@ import {
 } from "@react-three/fiber";
 
 export enum McDefault {
-  MinecraftTag = "minecraft:",
+  Tag = "minecraft:",
   ArgSize = 16,
 }
 
-export type McSide = "front" | "back" | " left" | "right" | "up" | "down";
+export type McSide =
+  | "front"
+  | "back"
+  | "left"
+  | "right"
+  | "up"
+  | "down"
+  | "sides"
+  | "base"
+  | "particle";
+
+export type McDirectory = "blockstates" | "models" | "textures";
+
 export type McDirection = "north" | "east" | "south" | "west";
 export type McCondition = "OR" | "AND";
 export type McNameSpace = string;
@@ -22,7 +34,7 @@ export type McPosition = [x: number, y: number, z: number];
 export type McDimension = [x: number, y: number, z: number];
 export type McUV = number[];
 
-export type McTexture = Partial<Record<string & "model", string>> | string;
+export type McTexture = Partial<Record<McSide, string>>;
 
 export type McRotation = {
   angle: number;
@@ -67,7 +79,7 @@ export type McModel = McGeometryProps & {
   y?: number;
   uvlock?: boolean;
   weight?: number;
-  parent?: string | McModel;
+  parent?: string;
   display?: McDisplay;
   elements?: McModel[];
 };
@@ -99,4 +111,9 @@ export type McModelMeshProps = {
     args: McPosition;
   };
   materialProps: MeshStandardMaterialProps;
+};
+
+export type McModelResource = {
+  models: McModel[];
+  textures: McTexture[];
 };

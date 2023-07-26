@@ -1,6 +1,6 @@
 import { Canvas } from "@react-three/fiber";
 import { ChangeEvent, useEffect, useState } from "react";
-import { loadModels } from "./utils";
+import { McModelUtils } from "./utils";
 import { McModel } from "./types";
 import { Model, TextInput } from "./component";
 
@@ -14,9 +14,8 @@ function App() {
     }
 
     async function loadModel() {
-      const model: McModel[] = await loadModels([blockName]);
-      console.log(model);
-      setModel(model[0]);
+      const model: McModel = await McModelUtils.loadModel(blockName);
+      setModel(model);
     }
 
     try {

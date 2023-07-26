@@ -12,7 +12,7 @@ import {
   Vector3,
 } from "three";
 import { McModel, McPosition } from "~/types";
-import { McUtils } from "~/utils";
+import { McModelUtils } from "~/utils";
 
 export interface Model {
   model: McModel;
@@ -28,11 +28,26 @@ const Model = ({ model, positions, spin, bounding }: Model) => {
     positions = [positions as McPosition];
   }
 
+  useEffect(
+    function setupBounding() {
+      if (bounding) {
+        const geometry = new BoxGeometry(16, 16, 16);
+        const material = new MeshStandardMaterial({
+          color: "#ff0000",
+          wireframe: true,
+        });
+        const mesh = new Mesh(geometry, material);
+        groupRef.current?.add(mesh);
+      }
+    },
+    [bounding]
+  );
+
   useEffect(() => {
-    function recursiveDrawBlock(model: McModel) {
+    function drawBlock(model: McModel) {
       if (model?.from && model?.to) {
-        const args = McUtils.fromToToCoordinates(model.from, model.to);
-        const position = McUtils.fromToToPosition(model.from, model.to);
+        const args = McModelUtils.fromToToCoordinates(model.from, model.to);
+        const position = McModelUtils.fromToToPosition(model.from, model.to);
 
         const geometry = new BoxGeometry(...args);
         const material = new MeshStandardMaterial({ transparent: true });
@@ -44,6 +59,7 @@ const Model = ({ model, positions, spin, bounding }: Model) => {
         for (let index = 0; index < positions.length; index++) {
           const currentPosition = positions[index] as McPosition;
           const temp = new Object3D();
+
           if (model.rotation) {
             temp.rotation[model.rotation.axis as "x" | "y" | "z"] =
               -MathUtils.degToRad(model.rotation.angle);
@@ -53,7 +69,7 @@ const Model = ({ model, positions, spin, bounding }: Model) => {
           // world position
           temp.position.add(
             new Vector3().fromArray(
-              currentPosition.map((v) => McUtils.multipyByDefaultArg(v))
+              currentPosition.map((v) => McModelUtils.multipyByDefaultArg(v))
             )
           );
 
@@ -64,41 +80,18 @@ const Model = ({ model, positions, spin, bounding }: Model) => {
 
         groupRef.current?.add(mesh);
       }
+    }
 
-      if (model.elements) {
-        for (const key in model.elements) {
-          const currentModel = model.elements[key];
-          recursiveDrawBlock(currentModel);
-        }
-      }
-
-      if (model?.parent instanceof Object) {
-        recursiveDrawBlock(model.parent);
-        if (model.parent.elements) {
-          for (const key in model.parent.elements) {
-            const currentModel = model.parent.elements[key];
-            recursiveDrawBlock(currentModel);
-          }
-        }
+    if (model.elements) {
+      for (const key in model.elements) {
+        const currentModel = model.elements[key];
+        drawBlock(currentModel);
       }
     }
 
-    recursiveDrawBlock(model);
-
-    if (bounding) {
-      const geometry = new BoxGeometry(16, 16, 16);
-      const material = new MeshStandardMaterial({
-        color: "#ff0000",
-        wireframe: true,
-      });
-      const mesh = new Mesh(geometry, material);
-      groupRef.current?.add(mesh);
-    }
-
-    if (spin)
-      return () => {
-        groupRef.current?.clear();
-      };
+    return () => {
+      groupRef.current?.clear();
+    };
   });
 
   useFrame((_, delta) => {

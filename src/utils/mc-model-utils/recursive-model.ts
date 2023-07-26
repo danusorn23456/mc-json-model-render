@@ -11,17 +11,18 @@ function recursiveModel(
   }
 
   let result = [...(prevResult || [])];
-  let currentResult = cb(model);
-  currentResult && result.push(currentResult);
+  let returnValue = cb(model);
+  returnValue && result.push(returnValue);
 
   if (isObject(model?.parent)) {
-    return recursiveModel(model.parent, cb, result);
+    let returnValue = recursiveModel(model.parent, cb, result);
+    returnValue && result.push(returnValue);
   }
 
   if (isObject(model?.elements)) {
     for (let index = 0; index < model.elements.length; index++) {
-      const x = recursiveModel(model.elements[index], cb, result);
-      x && result.push(x);
+      let returnValue = recursiveModel(model.elements[index], cb, result);
+      returnValue && result.push(returnValue);
     }
   }
 
