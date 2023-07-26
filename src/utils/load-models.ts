@@ -1,7 +1,7 @@
-// import { McEnum, McNameSpace } from "~/types";
+// import { McDefault, McNameSpace } from "~/types";
 
 import { isString } from "lodash";
-import { McEnum, McNameSpace, McModel } from "~/types";
+import { McDefault, McNameSpace, McModel } from "~/types";
 
 async function loadModel(
   name: string,
@@ -12,7 +12,10 @@ async function loadModel(
   };
 
   const splitedName = name.split("/");
-  name = splitedName[splitedName.length - 1].replace(McEnum.MinecraftTag, "");
+  name = splitedName[splitedName.length - 1].replace(
+    McDefault.MinecraftTag,
+    ""
+  );
 
   try {
     const variantJson = await import(`../data/blockstates/${name}.json`).then(
