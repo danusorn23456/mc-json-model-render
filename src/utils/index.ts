@@ -1,2 +1,2 @@
 export * from "./load-models";
-export * from "./get-model-props";
+export * from "./mc-utils";

@@ -1,13 +1,13 @@
 // import { McEnum, McNameSpace } from "~/types";
 
 import { isString } from "lodash";
-import { McEnum, McNameSpace, McSimplifyModel } from "~/types";
+import { McEnum, McNameSpace, McModel } from "~/types";
 
-async function loadModelJSON(
+async function loadModel(
   name: string,
   parent: Record<any, any> = {}
-): Promise<McSimplifyModel> {
-  let currentObj: McSimplifyModel = {
+): Promise<McModel> {
+  let currentObj: McModel = {
     model: name,
   };
 
@@ -45,7 +45,7 @@ async function loadModelJSON(
     }
 
     if (modelJson.hasOwnProperty("parent")) {
-      return await loadModelJSON(modelJson["parent"], currentObj);
+      return await loadModel(modelJson["parent"], currentObj);
     }
   } catch (e) {}
 
@@ -53,14 +53,14 @@ async function loadModelJSON(
 }
 
 async function loadModels(namespaces: McNameSpace[] | McNameSpace) {
-  let modelArr: McSimplifyModel[] = [];
+  let modelArr: McModel[] = [];
 
   if (isString(namespaces)) {
     namespaces = [namespaces];
   }
 
   for (const name of namespaces) {
-    const modelJson = await loadModelJSON(name);
+    const modelJson = await loadModel(name);
     modelArr.push({
       ...modelJson,
     });
