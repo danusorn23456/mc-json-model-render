@@ -15,6 +15,7 @@ function App() {
 
     async function loadModel() {
       const model: McModel[] = await loadModels([blockName]);
+      console.log(model);
       setModel(model[0]);
     }
 
@@ -51,7 +52,9 @@ function App() {
           <camera rotation={[0.5, -1, 0]} position={[0, 0, -64]}>
             <ambientLight />
             <pointLight position={[-4, 10, 0]} />
-            {model && <Model model={model} spin bounding />}
+            {model && (
+              <Model model={model} positions={[0, 0, 0]} spin bounding />
+            )}
           </camera>
         </scene>
       </Canvas>
