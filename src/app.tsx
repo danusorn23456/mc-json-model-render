@@ -1,12 +1,12 @@
 import { Canvas } from "@react-three/fiber";
 import { ChangeEvent, useEffect, useState } from "react";
 import { loadModels } from "./utils";
-import { McSimplifyModel } from "./types";
+import { McModel } from "./types";
 import { Model, TextInput } from "./component";
 
 function App() {
   const [blockName, setBlockName] = useState("lectern");
-  const [model, setModel] = useState<McSimplifyModel>();
+  const [model, setModel] = useState<McModel>();
 
   useEffect(() => {
     if (!blockName) {
@@ -14,7 +14,7 @@ function App() {
     }
 
     async function loadModel() {
-      const model: McSimplifyModel[] = await loadModels([blockName]);
+      const model: McModel[] = await loadModels([blockName]);
       setModel(model[0]);
     }
 
@@ -51,7 +51,7 @@ function App() {
           <camera rotation={[0.5, -1, 0]} position={[0, 0, -64]}>
             <ambientLight />
             <pointLight position={[-4, 10, 0]} />
-            {model && <Model model={model} spin />}
+            {model && <Model model={model} spin bounding />}
           </camera>
         </scene>
       </Canvas>
